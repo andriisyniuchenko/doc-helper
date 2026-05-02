@@ -1,0 +1,41 @@
+services:
+  opensearch:
+    image: opensearchproject/opensearch:3.6.0
+    container_name: doc_helper_opensearch
+    environment:
+      - discovery.type=single-node
+      - DISABLE_SECURITY_PLUGIN=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: doc_helper_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  app:
+    build: .
+    container_name: doc_helper_app
+    depends_on:
+      opensearch:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "8501:8501"
+    command: streamlit run app/main.py --server.port=8501 --server.address=0.0.0.0
+
+volumes:
+  opensearch_data:
+  ollama_data:
