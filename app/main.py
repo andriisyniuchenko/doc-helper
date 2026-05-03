@@ -6,10 +6,15 @@ st.set_page_config(page_title="LangChain Documentation Helper", layout="centered
 st.title("LangChain Documentation Helper")
 
 with st.sidebar:
-    st.subheader("Session")
+    st.subheader("Chat history")
     if st.button("Clear chat", use_container_width=True):
         st.session_state.pop("messages", None)
         st.rerun()
+    st.divider()
+    if "messages" in st.session_state:
+        for msg in st.session_state.messages:
+            if msg["role"] == "user":
+                st.markdown(f"- {msg['content']}")
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
