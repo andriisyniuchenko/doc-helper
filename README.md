@@ -1,6 +1,17 @@
 # doc-helper
 
-RAG-based assistant that answers questions about LangChain documentation.
+A local RAG-based assistant that answers questions about LangChain documentation. Ask anything about LangChain — the system finds relevant docs and generates an answer using a local LLM.
+
+## Screenshots
+
+**What is LangChain?**
+![LangChain](assets/LangChain.png)
+
+**What are deep agents?**
+![Deep Agents](assets/DeepAgents.png)
+
+**What weather in Tokyo?** *(out-of-scope question — correctly says it doesn't know)*
+![Tokyo](assets/Tokyo.png)
 
 ## Stack
 
@@ -25,8 +36,8 @@ User question
 
 - Docker
 - [Ollama](https://ollama.com) installed natively (required for GPU acceleration)
-- Tavily API key (free at https://app.tavily.com)
-- LangSmith API key (free at https://smith.langchain.com)
+- Tavily API key — free at https://app.tavily.com
+- LangSmith API key — free at https://smith.langchain.com
 
 ## Setup
 
@@ -45,10 +56,10 @@ ollama pull nomic-embed-text
 ollama pull llama3.2:3b
 ```
 
-4. Start the services:
+4. Build and start the services:
 
 ```bash
-make up
+make build && make up
 ```
 
 5. Run ingestion to crawl and index LangChain docs:
@@ -63,10 +74,10 @@ make ingest
 
 | Command | Description |
 |---|---|
+| `make build` | Build the app Docker image |
 | `make up` | Start all services |
 | `make down` | Stop all services |
 | `make ingest` | Crawl and index LangChain docs |
-| `make build` | Rebuild the app Docker image |
 | `make restart` | Restart the app container |
 | `make logs` | Follow logs |
 | `make clean` | Stop services and remove volumes |
