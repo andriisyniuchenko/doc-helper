@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from langchain_core.documents import Document
 from langchain_ollama import OllamaEmbeddings
 from langchain_community.vectorstores import OpenSearchVectorSearch
 
@@ -15,5 +16,5 @@ _store = OpenSearchVectorSearch(
 )
 
 
-def get_relevant_docs(question: str, k: int = 5):
+def get_relevant_docs(question: str, k: int = 5) -> list[Document]:
     return _store.similarity_search(question, k=k)
